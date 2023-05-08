@@ -1,7 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:mirror_wall/model/globals.dart';
 import 'package:mirror_wall/model/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';

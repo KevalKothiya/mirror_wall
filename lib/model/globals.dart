@@ -1,6 +1,5 @@
+// ignore_for_file: camel_case_types
 import 'dart:async';
-
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class NetworkCheck_Model {
   String connectivityStatus;

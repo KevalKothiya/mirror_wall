@@ -4,7 +4,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 class AppThemes {
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
-    textTheme: TextTheme(
+    textTheme: const TextTheme(
       bodyMedium: TextStyle(
         fontSize: 20,
         color: Colors.deepPurple,

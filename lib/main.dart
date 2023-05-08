@@ -38,7 +38,7 @@ void main() async {
               debugShowCheckedModeBanner: false,
               theme: AppThemes.lightTheme,
               routes: {
-                '/' : (context) => HomePage(),
+                '/' : (context) => const HomePage(),
               },
             );
           },

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mirror_wall/controller/controller_provider.dart';
@@ -45,11 +47,6 @@ class _HomePageState extends State<HomePage> {
         actions: [
           PopupMenuButton(
             icon: const Icon(Icons.more_vert),
-            // onSelected: (SampleItem item) {
-            //   setState(() {
-            //     selectedMenu = item;
-            //   });
-            // },
             onSelected: (val) {
               setState(() {});
             },
@@ -61,27 +58,25 @@ class _HomePageState extends State<HomePage> {
                     showBottomSheet(
                       context: context,
                       builder: (context) {
-                        return Container(
+                        return SizedBox(
                           height: 90.h,
                           width: double.infinity,
                           child: SingleChildScrollView(
                             child: Column(
                               children: [
-                                Container(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        icon: const Icon(
-                                          CupertinoIcons.power,
-                                        ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      icon: const Icon(
+                                        CupertinoIcons.power,
                                       ),
-                                      const Text("DISMISS"),
-                                    ],
-                                  ),
+                                    ),
+                                    const Text("DISMISS"),
+                                  ],
                                 ),
                                 if (listOfTitle.isNotEmpty)
                                   ListView.builder(
@@ -95,7 +90,8 @@ class _HomePageState extends State<HomePage> {
                                             ListTile(
                                               title: Text(listOfTitle[i]),
                                               subtitle: Text(
-                                                  listOfLink[i].toString()),
+                                                listOfLink[i].toString(),
+                                              ),
                                               trailing: IconButton(
                                                 onPressed: () {
                                                   listOfTitle.removeAt(i);
@@ -112,32 +108,35 @@ class _HomePageState extends State<HomePage> {
                                                         context,
                                                         listen: false)
                                                     .initialization(
-                                                        listOfLink[i]
-                                                            .toString());
-                                                print(Provider.of<
-                                                            ApplicationStartedLink_Provider>(
-                                                        context,
-                                                        listen: false)
-                                                    .applicationStartedLink_Model
-                                                    .uri);
+                                                  listOfLink[i].toString(),
+                                                );
+                                                // print(Provider.of<
+                                                //             ApplicationStartedLink_Provider>(
+                                                //         context,
+                                                //         listen: false)
+                                                //     .applicationStartedLink_Model
+                                                //     .uri);
 
-                                                await inAppWebViewController?.loadUrl(
-                                                    urlRequest: URLRequest(
-                                                        url: Uri.parse(Provider
-                                                                .of<ApplicationStartedLink_Provider>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                            .applicationStartedLink_Model
-                                                            .uri)));
+                                                await inAppWebViewController
+                                                    ?.loadUrl(
+                                                  urlRequest: URLRequest(
+                                                    url: Uri.parse(
+                                                      Provider.of<ApplicationStartedLink_Provider>(
+                                                              context,
+                                                              listen: false)
+                                                          .applicationStartedLink_Model
+                                                          .uri,
+                                                    ),
+                                                  ),
+                                                );
                                                 setState(() {});
                                                 Navigator.of(context).pop();
-                                                print(Provider.of<
-                                                            ApplicationStartedLink_Provider>(
-                                                        context,
-                                                        listen: false)
-                                                    .applicationStartedLink_Model
-                                                    .uri);
+                                                // print(Provider.of<
+                                                //             ApplicationStartedLink_Provider>(
+                                                //         context,
+                                                //         listen: false)
+                                                //     .applicationStartedLink_Model
+                                                //     .uri);
                                               },
                                             ),
                                           ],
@@ -147,8 +146,10 @@ class _HomePageState extends State<HomePage> {
                                   )
                                 else
                                   Container(
+                                    height: 550,
                                     color: Colors.white,
-                                    child: const Center(
+                                    child: const Align(
+                                      alignment: Alignment(0, 0),
                                       child: Text(
                                         "No any bookmarks yet...",
                                         style: TextStyle(
@@ -167,133 +168,145 @@ class _HomePageState extends State<HomePage> {
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      const Icon(
+                    children: const [
+                      Icon(
                         Icons.bookmark_rounded,
                       ),
-                      const Text("All Bookmarks"),
+                      Text(
+                        "All Bookmarks",
+                      ),
                     ],
                   ),
                 ),
                 PopupMenuItem(
                   value: 2,
-                  onTap:(){},
+                  onTap: () {},
                   child: GestureDetector(
-                    onTap:() async {
+                    onTap: () async {
                       showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Center(
-                                  child: Text("Search Engine")),
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  RadioListTile(
-                                    value: 1,
-                                    groupValue: Provider.of<
-                                        RadioButton_Provider>(
-                                        context)
-                                        .radioButton_Model
-                                        .groupValue,
-                                    onChanged: (val) async {
-                                      if (val != null) {
-                                        Provider.of<RadioButton_Provider>(
-                                            context,
-                                            listen: false)
-                                            .initialization(val);
-                                        await inAppWebViewController
-                                            ?.loadUrl(
-                                            urlRequest: URLRequest(
-                                                url: Uri.parse(
-                                                    "https://www.google.com/")));
-                                      }
-                                      Navigator.pop(context);
-                                    },
-                                    title: const Text("Google"),
-                                  ),
-                                  RadioListTile(
-                                    value: 2,
-                                    groupValue: Provider.of<
-                                        RadioButton_Provider>(
-                                        context)
-                                        .radioButton_Model
-                                        .groupValue,
-                                    onChanged: (val) async {
-                                      if (val != null) {
-                                        Provider.of<RadioButton_Provider>(
-                                            context,
-                                            listen: false)
-                                            .initialization(val);
-                                        await inAppWebViewController
-                                            ?.loadUrl(
-                                          urlRequest: URLRequest(
-                                            url: Uri.parse(
-                                              "https://www.yahoo.com/?guccounter=1",
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                    },
-                                    title: const Text("Yahoo"),
-                                  ),
-                                  RadioListTile(
-                                    value: 3,
-                                    groupValue: Provider.of<
-                                        RadioButton_Provider>(
-                                        context)
-                                        .radioButton_Model
-                                        .groupValue,
-                                    onChanged: (val) async {
-                                      if (val != null) {
-                                        Provider.of<RadioButton_Provider>(
-                                            context,
-                                            listen: false)
-                                            .initialization(val);
-                                        await inAppWebViewController
-                                            ?.loadUrl(
-                                            urlRequest: URLRequest(
-                                                url: Uri.parse(
-                                                    "https://www.bing.com/")));
-                                      }
-                                    },
-                                    title: const Text("Bing"),
-                                  ),
-                                  RadioListTile(
-                                    value: 4,
-                                    groupValue: Provider.of<
-                                        RadioButton_Provider>(
-                                        context)
-                                        .radioButton_Model
-                                        .groupValue,
-                                    onChanged: (val) async {
-                                      if (val != null) {
-                                        Provider.of<RadioButton_Provider>(
-                                            context,
-                                            listen: false)
-                                            .initialization(val);
-                                        await inAppWebViewController
-                                            ?.loadUrl(
-                                            urlRequest: URLRequest(
-                                                url: Uri.parse(
-                                                    "https://duckduckgo.com/")));
-                                      }
-                                    },
-                                    title: const Text("Duck Duck Go"),
-                                  ),
-                                ],
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Center(
+                              child: Text(
+                                "Search Engine",
                               ),
-                            );
-                          });
+                            ),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                RadioListTile(
+                                  value: 1,
+                                  groupValue:
+                                      Provider.of<RadioButton_Provider>(context)
+                                          .radioButton_Model
+                                          .groupValue,
+                                  onChanged: (val) async {
+                                    if (val != null) {
+                                      Provider.of<RadioButton_Provider>(context,
+                                              listen: false)
+                                          .initialization(val);
+                                      await inAppWebViewController?.loadUrl(
+                                        urlRequest: URLRequest(
+                                          url: Uri.parse(
+                                              "https://www.google.com/"),
+                                        ),
+                                      );
+                                    }
+                                    Navigator.pop(context);
+                                  },
+                                  title: const Text(
+                                    "Google",
+                                  ),
+                                ),
+                                RadioListTile(
+                                  value: 2,
+                                  groupValue:
+                                      Provider.of<RadioButton_Provider>(context)
+                                          .radioButton_Model
+                                          .groupValue,
+                                  onChanged: (val) async {
+                                    if (val != null) {
+                                      Provider.of<RadioButton_Provider>(context,
+                                              listen: false)
+                                          .initialization(val);
+                                      await inAppWebViewController?.loadUrl(
+                                        urlRequest: URLRequest(
+                                          url: Uri.parse(
+                                            "https://www.yahoo.com/?guccounter=1",
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  title: const Text(
+                                    "Yahoo",
+                                  ),
+                                ),
+                                RadioListTile(
+                                  value: 3,
+                                  groupValue:
+                                      Provider.of<RadioButton_Provider>(context)
+                                          .radioButton_Model
+                                          .groupValue,
+                                  onChanged: (val) async {
+                                    if (val != null) {
+                                      Provider.of<RadioButton_Provider>(context,
+                                              listen: false)
+                                          .initialization(val);
+                                      await inAppWebViewController?.loadUrl(
+                                        urlRequest: URLRequest(
+                                          url: Uri.parse(
+                                            "https://www.bing.com/",
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  title: const Text(
+                                    "Bing",
+                                  ),
+                                ),
+                                RadioListTile(
+                                  value: 4,
+                                  groupValue:
+                                      Provider.of<RadioButton_Provider>(context)
+                                          .radioButton_Model
+                                          .groupValue,
+                                  onChanged: (val) async {
+                                    if (val != null) {
+                                      Provider.of<RadioButton_Provider>(context,
+                                              listen: false)
+                                          .initialization(val);
+                                      await inAppWebViewController?.loadUrl(
+                                        urlRequest: URLRequest(
+                                          url: Uri.parse(
+                                            "https://duckduckgo.com/",
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  title: const Text(
+                                    "Duck Duck Go",
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      );
                       setState(() {});
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        const Icon(
+                      children: const [
+                        Icon(
                           Icons.screen_search_desktop_outlined,
                         ),
-                        const Text("Search Engine"),
+                        Text(
+                          "Search Engine",
+                        ),
                       ],
                     ),
                   ),
@@ -310,7 +323,7 @@ class _HomePageState extends State<HomePage> {
                   .networkCheck_Model
                   .connectivityStatus !=
               "Waiting")
-          ? Container(
+          ? SizedBox(
               height: double.infinity,
               width: double.infinity,
               child: Column(
@@ -346,76 +359,97 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Container(
                             padding: EdgeInsets.only(
-                                left: 5.w, right: 5.w, top: 0.5.h),
+                              left: 5.w,
+                              right: 5.w,
+                              top: 0.5.h,
+                            ),
                             child: TextField(
                               controller: textEditingController,
                               decoration: InputDecoration(
                                 hintText: "Search or type web address",
                                 suffixIcon: IconButton(
-                                    onPressed: () async {
-                                      if(Provider.of<RadioButton_Provider>(context,listen: false).radioButton_Model.groupValue == 1){
-                                        String searchUri =
-                                            textEditingController.text;
-                                        inAppWebViewController?.loadUrl(
-                                          urlRequest: URLRequest(
-                                            url: Uri.parse(
-                                              "https://www.google.com/search?q=$searchUri",
-                                            ),
+                                  onPressed: () async {
+                                    if (Provider.of<RadioButton_Provider>(
+                                                context,
+                                                listen: false)
+                                            .radioButton_Model
+                                            .groupValue ==
+                                        1) {
+                                      String searchUri =
+                                          textEditingController.text;
+                                      inAppWebViewController?.loadUrl(
+                                        urlRequest: URLRequest(
+                                          url: Uri.parse(
+                                            "https://www.google.com/search?q=$searchUri",
                                           ),
-                                        );
-                                      }
-                                      else if(Provider.of<RadioButton_Provider>(context,listen: false).radioButton_Model.groupValue == 2){
-                                        String searchUri =
-                                            textEditingController.text;
-                                        inAppWebViewController?.loadUrl(
-                                          urlRequest: URLRequest(
-                                            url: Uri.parse(
-                                              "https://search.yahoo.com/search=$searchUri",
-                                            ),
+                                        ),
+                                      );
+                                    } else if (Provider.of<
+                                                    RadioButton_Provider>(
+                                                context,
+                                                listen: false)
+                                            .radioButton_Model
+                                            .groupValue ==
+                                        2) {
+                                      String searchUri =
+                                          textEditingController.text;
+                                      inAppWebViewController?.loadUrl(
+                                        urlRequest: URLRequest(
+                                          url: Uri.parse(
+                                            "https://search.yahoo.com/search=$searchUri",
                                           ),
-                                        );
-                                      }
-                                      else if(Provider.of<RadioButton_Provider>(context,listen: false).radioButton_Model.groupValue == 3){
-                                        String searchUri =
-                                            textEditingController.text;
-                                        inAppWebViewController?.loadUrl(
-                                          urlRequest: URLRequest(
-                                            url: Uri.parse(
-                                              "https://www.bing.com/search?q=$searchUri",
-                                            ),
+                                        ),
+                                      );
+                                    } else if (Provider.of<
+                                                    RadioButton_Provider>(
+                                                context,
+                                                listen: false)
+                                            .radioButton_Model
+                                            .groupValue ==
+                                        3) {
+                                      String searchUri =
+                                          textEditingController.text;
+                                      inAppWebViewController?.loadUrl(
+                                        urlRequest: URLRequest(
+                                          url: Uri.parse(
+                                            "https://www.bing.com/search?q=$searchUri",
                                           ),
-                                        );
-                                      }
-                                      else{
-                                        String searchUri =
-                                            textEditingController.text;
-                                        inAppWebViewController?.loadUrl(
-                                          urlRequest: URLRequest(
-                                            url: Uri.parse(
-                                              "https://www.duckduckgo.com/search?q=$searchUri",
-                                            ),
+                                        ),
+                                      );
+                                    } else {
+                                      String searchUri =
+                                          textEditingController.text;
+                                      inAppWebViewController?.loadUrl(
+                                        urlRequest: URLRequest(
+                                          url: Uri.parse(
+                                            "https://www.duckduckgo.com/search?q=$searchUri",
                                           ),
-                                        );
-                                      }
-                                    },
-                                    icon: const Icon(Icons.search)),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  icon: const Icon(
+                                    Icons.search,
+                                  ),
+                                ),
                                 border: const OutlineInputBorder(),
                               ),
                             ),
                           ),
                           Container(
-                              child: Provider.of<LinearProgressIndicator_Provider>(
-                                              context)
-                                          .linearProgressIndicator_Model
-                                          .progress <
-                                      1.0
-                                  ? LinearProgressIndicator(
-                                      value: Provider.of<
-                                                  LinearProgressIndicator_Provider>(
-                                              context)
-                                          .linearProgressIndicator_Model
-                                          .progress)
-                                  : Container()),
+                            child: Provider.of<LinearProgressIndicator_Provider>(
+                                            context)
+                                        .linearProgressIndicator_Model
+                                        .progress <
+                                    1.0
+                                ? LinearProgressIndicator(
+                                    value: Provider.of<
+                                                LinearProgressIndicator_Provider>(
+                                            context)
+                                        .linearProgressIndicator_Model
+                                        .progress)
+                                : Container(),
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
@@ -436,7 +470,9 @@ class _HomePageState extends State<HomePage> {
                                       .radioButton_Model
                                       .groupValue = 1;
                                 },
-                                icon: const Icon(Icons.home),
+                                icon: const Icon(
+                                  Icons.home,
+                                ),
                               ),
                               IconButton(
                                 onPressed: () async {
@@ -501,117 +537,6 @@ class _HomePageState extends State<HomePage> {
                                 },
                                 icon: const Icon(Icons.arrow_forward_ios),
                               ),
-                              IconButton(
-                                onPressed: () async {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          title: const Center(
-                                              child: Text("Search Engine")),
-                                          content: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              RadioListTile(
-                                                value: 1,
-                                                groupValue: Provider.of<
-                                                            RadioButton_Provider>(
-                                                        context)
-                                                    .radioButton_Model
-                                                    .groupValue,
-                                                onChanged: (val) async {
-                                                  if (val != null) {
-                                                    Provider.of<RadioButton_Provider>(
-                                                            context,
-                                                            listen: false)
-                                                        .initialization(val);
-                                                    await inAppWebViewController
-                                                        ?.loadUrl(
-                                                            urlRequest: URLRequest(
-                                                                url: Uri.parse(
-                                                                    "https://www.google.com/")));
-                                                  }
-                                                  Navigator.pop(context);
-                                                },
-                                                title: const Text("Google"),
-                                              ),
-                                              RadioListTile(
-                                                value: 2,
-                                                groupValue: Provider.of<
-                                                            RadioButton_Provider>(
-                                                        context)
-                                                    .radioButton_Model
-                                                    .groupValue,
-                                                onChanged: (val) async {
-                                                  if (val != null) {
-                                                    Provider.of<RadioButton_Provider>(
-                                                            context,
-                                                            listen: false)
-                                                        .initialization(val);
-                                                    await inAppWebViewController
-                                                        ?.loadUrl(
-                                                      urlRequest: URLRequest(
-                                                        url: Uri.parse(
-                                                          "https://www.yahoo.com/?guccounter=1",
-                                                        ),
-                                                      ),
-                                                    );
-                                                  }
-                                                },
-                                                title: const Text("Yahoo"),
-                                              ),
-                                              RadioListTile(
-                                                value: 3,
-                                                groupValue: Provider.of<
-                                                            RadioButton_Provider>(
-                                                        context)
-                                                    .radioButton_Model
-                                                    .groupValue,
-                                                onChanged: (val) async {
-                                                  if (val != null) {
-                                                    Provider.of<RadioButton_Provider>(
-                                                            context,
-                                                            listen: false)
-                                                        .initialization(val);
-                                                    await inAppWebViewController
-                                                        ?.loadUrl(
-                                                            urlRequest: URLRequest(
-                                                                url: Uri.parse(
-                                                                    "https://www.bing.com/")));
-                                                  }
-                                                },
-                                                title: const Text("Bing"),
-                                              ),
-                                              RadioListTile(
-                                                value: 4,
-                                                groupValue: Provider.of<
-                                                            RadioButton_Provider>(
-                                                        context)
-                                                    .radioButton_Model
-                                                    .groupValue,
-                                                onChanged: (val) async {
-                                                  if (val != null) {
-                                                    Provider.of<RadioButton_Provider>(
-                                                            context,
-                                                            listen: false)
-                                                        .initialization(val);
-                                                    await inAppWebViewController
-                                                        ?.loadUrl(
-                                                            urlRequest: URLRequest(
-                                                                url: Uri.parse(
-                                                                    "https://duckduckgo.com/")));
-                                                  }
-                                                },
-                                                title: const Text("Duck Duck Go"),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      });
-                                  setState(() {});
-                                },
-                                icon: const Icon(Icons.more_vert),
-                              ),
                             ],
                           ),
                         ],
@@ -623,7 +548,9 @@ class _HomePageState extends State<HomePage> {
             )
           : Container(
               alignment: Alignment.center,
-              child: const Text("Offline"),
+              child: const Text(
+                "Offline",
+              ),
             ),
     );
   }
