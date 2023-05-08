@@ -146,7 +146,7 @@ class _HomePageState extends State<HomePage> {
                                   )
                                 else
                                   Container(
-                                    height: 550,
+                                    height: 82.h,
                                     color: Colors.white,
                                     child: const Align(
                                       alignment: Alignment(0, 0),
